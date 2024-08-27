@@ -19,8 +19,6 @@ export function AccountInfo() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  console.log("balance ", balance, account?.address);
-
   const formattedBalance =
     isApiReady && balance ? getFormattedBalance(balance) : undefined;
 
@@ -40,12 +38,6 @@ export function AccountInfo() {
       logout();
       console.log("logged out");
     };
-
-  useEffect(() => {
-    console.log("xxxxx balance", balance);
-    // if (!isAccountReady) return;
-    // if (!account) return localStorage.removeItem(WALLET_ID_LOCAL_STORAGE_KEY);
-  }, [balance]);
 
   return (
     <>

@@ -22,6 +22,7 @@ import { WALLET_ID_LOCAL_STORAGE_KEY } from "../features/wallet/consts";
 // import { WalletId } from "../features/wallet/types";
 import { useAccount } from "@gear-js/react-hooks";
 import { useApi } from "@gear-js/react-hooks";
+import { useWalletSync } from "../features/wallet/hooks";
 
 // function useWalletSync() {
 //   async function ss() {
@@ -81,25 +82,24 @@ import { useApi } from "@gear-js/react-hooks";
 // }
 
 const ADDRESS = {
-  // NODE: "wss://testnet.vara-network.io",
-  NODE: "wss://testnet.vara.network/",
+  NODE: "wss://testnet.vara-network.io",
+  // NODE: "wss://testnet.vara.network/",
+  // mainnet
+  // NODE: "wss://rpc.vara.network/",
 };
 
 function AppContent({ children }: { children: React.ReactNode }) {
   const { isApiReady } = useApi();
   const { isAccountReady } = useAccount();
 
-  const isAppReady = isApiReady && isAccountReady;
+  useWalletSync();
 
-  useEffect(() => {
-    console.log("Estado de la API:", isApiReady);
-    console.log("Estado de la Cuenta:", isAccountReady);
-  }, [isApiReady, isAccountReady]);
+  const isAppReady = isApiReady && isAccountReady;
 
   if (!isAppReady) {
     return (
       <div className="flex flex-col h-screen w-full items-center justify-center bg-transparent">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-4 border-amber-500"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-b-4 border-rose-500"></div>
       </div>
     );
   }
@@ -107,9 +107,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header isAccountVisible={true} />
-      <div className="flex min-h-screen">
-        <main className="ml-44 w-full flex overflow-y-auto">{children}</main>
-      </div>
+      <main className="w-full mt-14 ">{children}</main>
     </>
   );
 }
@@ -117,20 +115,11 @@ function AppContent({ children }: { children: React.ReactNode }) {
 function PlatformLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>): JSX.Element {
-  const { isApiReady } = useApi();
-  const { isAccountReady } = useAccount();
-  console.log("😇 isApiReady, isAccountReady ? ", isApiReady, isAccountReady);
-  const isAppReady = isApiReady && isAccountReady;
-
   // useEffect(() => {
   //   console.log("xxxxx isApiReady", isApiReady, isAccountReady);
   //   // if (!isAccountReady) return;
   //   // if (!account) return localStorage.removeItem(WALLET_ID_LOCAL_STORAGE_KEY);
   // }, []);
-
-  useEffect(() => {
-    console.log("isApiReady:", isApiReady, "isAccountReady:", isAccountReady);
-  }, [isApiReady, isAccountReady]);
 
   return (
     <GearApiProvider initialArgs={{ endpoint: ADDRESS.NODE }}>
@@ -147,7 +136,7 @@ function PlatformLayout({
           ) : (
             <>
               <div className="flex flex-col h-screen w-full items-center justify-center bg-transparent">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-4 border-amber-500"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-4 border-rose-500"></div>
               </div>
             </>
           )} */}

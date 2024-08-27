@@ -1,9 +1,11 @@
 import {
+  BadgeIcon,
   BarChartIcon,
   BellIcon,
   CubeIcon,
   DiscordLogoIcon,
   FileIcon,
+  GlobeIcon,
   HomeIcon,
   TwitterLogoIcon,
 } from "@radix-ui/react-icons";
@@ -27,7 +29,7 @@ export function Header({ isAccountVisible }: Props) {
     >
       <div id="logo" className="flex-shrink-0">
         <Link id="logo" href="/">
-          <span className="font-black dark:text-amber-500 font-mono">
+          <span className="font-black text-rose-800 dark:text-rose-500 font-mono">
             <i>vticket</i>
           </span>
         </Link>
@@ -36,7 +38,7 @@ export function Header({ isAccountVisible }: Props) {
       {/* links */}
       <div id="links" className="flex-grow flex justify-center items-center">
         <Link
-          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-amber-100 hover:text-gray-900 focus:bg-amber-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-rose-100 hover:text-gray-900 focus:bg-rose-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
           href="/events"
         >
           <HomeIcon />
@@ -45,7 +47,7 @@ export function Header({ isAccountVisible }: Props) {
 
         {/* // FIXME goes into profile */}
         {/* <Link
-          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-amber-100 hover:text-gray-900 focus:bg-amber-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-rose-100 hover:text-gray-900 focus:bg-rose-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
           href="#"
         >
           <BellIcon />
@@ -53,25 +55,33 @@ export function Header({ isAccountVisible }: Props) {
         </Link> */}
 
         <Link
-          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-amber-100 hover:text-gray-900 focus:bg-amber-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-rose-100 hover:text-gray-900 focus:bg-rose-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
           href="/create"
         >
           <FileIcon />
           Create event
         </Link>
-        <Link
-          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-amber-100 hover:text-gray-900 focus:bg-amber-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+        {/* <Link
+          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-rose-100 hover:text-gray-900 focus:bg-rose-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
           href="/buy"
         >
           <BarChartIcon />
           Buy ticket
-        </Link>
+        </Link> */}
         <Link
-          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-amber-100 hover:text-gray-900 focus:bg-amber-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-rose-100 hover:text-gray-900 focus:bg-rose-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
           href="/hold"
         >
           <CubeIcon />
           Hold ticket
+        </Link>
+
+        <Link
+          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-rose-100 hover:text-gray-900 focus:bg-rose-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
+          href="/holdings"
+        >
+          <GlobeIcon />
+          My tickets
         </Link>
 
         {/* footer  */}
