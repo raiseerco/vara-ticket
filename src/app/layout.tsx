@@ -12,7 +12,7 @@ function RootLayout({
 }: Readonly<{ children: React.ReactNode }>): JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className="bg-stone-50 dark:bg-stone-900 ">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -5,11 +5,12 @@ import { useAccount, useApi } from "@gear-js/react-hooks";
 import { useEffect, useState } from "react";
 
 import EventCard from "@/components/EventCard";
+import MyEventCard from "@/components/MyEventCard";
 import PlatformLayout from "../layouts/PlatformLayout";
 
 function PageContents() {
   const { isApiReady, api } = useApi();
-  const { isAccountReady } = useAccount();
+  const { isAccountReady, account } = useAccount();
   const [fullState, setFullState] = useState<any[]>([]);
 
   const isAppReady = isApiReady && isAccountReady;
@@ -46,17 +47,14 @@ function PageContents() {
             // @ts-ignore
 
             const allItems = state.evStateInfo.map(([_, arr]) => arr).flat();
-            console.log(
-              "all items  ",
-              allItems.map((e) => e[1])
+            const flatItems = allItems.map((e) => e[1]);
+            console.log("all items  ", flatItems);
+
+            const filteredItems = flatItems.filter((e) =>
+              e.buyers.find((f) => f === account.decodedAddress)
             );
             // @ts-ignore
-            // setFullState(state?.evStateInfo[0][1]);
-            setFullState(allItems.map((e) => e[1]));
-            // @ts-ignore
-            console.log("State from contrac1t:", state.evStateInfo);
-            // @ts-ignore
-            console.log("full state:", state?.evStateInfo[0][1]);
+            setFullState(filteredItems);
           } else {
             console.error("Unexpected state format:", state);
           }
@@ -81,12 +79,11 @@ function PageContents() {
         {fullState.map((eventItem, k) => {
           return (
             <div key={k}>
-              <EventCard
+              <MyEventCard
                 name={eventItem.name}
                 description={eventItem.description}
                 creator={eventItem.creator}
-                numberOfTickets={eventItem.numberOfTickets}
-                ticketsLeft={eventItem.ticketsLeft}
+                myTickets={0} // FIXME
                 date={eventItem.date}
                 eventId={`${eventItem.creator}-${eventItem.eventId}`}
               />
