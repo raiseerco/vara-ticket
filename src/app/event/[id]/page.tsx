@@ -167,6 +167,15 @@ function PageContents(idEvent: any) {
                 {eventDetails.description}
               </p>
               <div className="text-right mt-2">
+                {eventDetails.numberOfTickets - eventDetails.ticketsLeft <
+                10 ? (
+                  <button className="px-3 py-1 rounded-md mr-2 text-white bg-rose-500">
+                    Hurry up!
+                  </button>
+                ) : (
+                  <></>
+                )}
+
                 <small
                   className="  bg-stone-300 dark:bg-rose-400
                   px-2 py-1 rounded-md"
@@ -184,18 +193,26 @@ function PageContents(idEvent: any) {
                 <p className="ml-4">Buy tickets</p>
               </div>
 
-              <div className="w-full text-center p-4 border rounded-lg">
-                <input
-                  className="mb-4 mt-2  outline-rose-300 px-3 py-2 text-l rounded-md border "
-                  type="text"
-                  onChange={(e) => setAmount(parseInt(e.target.value, 10))}
-                  placeholder={"Amount of tickets..."}
-                />
+              {eventDetails.ticketsLeft === 0 ? (
+                <div className="w-full text-center p-4 border rounded-lg">
+                  <button className="px-3 py-1 rounded-md mr-2 text-white bg-stone-500">
+                    Event sold out!
+                  </button>
+                </div>
+              ) : (
+                <div className="w-full text-center p-4 border rounded-lg">
+                  <input
+                    className="mb-4 mt-2  outline-rose-300 px-3 py-2 text-l rounded-md border "
+                    type="text"
+                    onChange={(e) => setAmount(parseInt(e.target.value, 10))}
+                    placeholder={"Amount of tickets..."}
+                  />
 
-                <Button onClick={handleBuy} className="ml-2 bg-rose-400 py-1">
-                  CONFIRM!
-                </Button>
-              </div>
+                  <Button onClick={handleBuy} className="ml-2 bg-rose-400 py-1">
+                    CONFIRM!
+                  </Button>
+                </div>
+              )}
 
               {alert && (
                 <div className="bg-rose-200 border rounded-lg p-4 m-4">

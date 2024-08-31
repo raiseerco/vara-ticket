@@ -4,13 +4,13 @@ import { Button } from "./ui/Button";
 import Link from "next/link";
 import React from "react";
 
-interface EventCardProps {
+interface TicketCardProps {
   name: string;
   description: string;
   creator: string;
   numberOfTickets: number;
   ticketsLeft: number;
-  date: number;
+  date: Date;
   eventId: string;
   // buyers: string[] ;
   // running:boolean;
@@ -20,7 +20,7 @@ interface EventCardProps {
   // ticketFtId:number;
 }
 
-const EventCard: React.FC<EventCardProps> = ({
+const TicketCard: React.FC<TicketCardProps> = ({
   name,
   description,
   creator,
@@ -56,7 +56,7 @@ const EventCard: React.FC<EventCardProps> = ({
           {description || <i>no description set</i>}
         </div>
 
-        <div className="flex justify-between py-2 align-mi">
+        {/* <div className="flex justify-between py-2 align-mi">
           <Button className="bg-rose-400 text-xs h-6 px-3 rounded-sm">
             BUY
           </Button>
@@ -66,15 +66,14 @@ const EventCard: React.FC<EventCardProps> = ({
           >
             {ticketsLeft | 0}/{numberOfTickets} tickets left
           </small>
-        </div>
+        </div> */}
 
         <p className="text-right text-xs italic font-light mt-2">
-          Creator: {shortAddress(creator)} at{" "}
-          {localTime(date.toString(), "America/Montevideo")}
+          Creator: {shortAddress(creator)} at {new Date(date).toISOString()}
         </p>
       </div>
     </Link>
   );
 };
 
-export default EventCard;
+export default TicketCard;

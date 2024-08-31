@@ -39,7 +39,7 @@ export default function Home() {
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
-          className="absolute mt-10 opacity-30 blur-sm inset-0 z-0"
+          className="absolute mt-10 mix-blend-darken  blur-sm  inset-0 z-0"
         />
         <div className="relative z-10 flex flex-col lg:flex-row gap-8 justify-between items-center max-w-7xl px-6">
           <div className="w-full lg:w-2/3 flex flex-col gap-y-8 lg:ml-14 lg:mt-16">
