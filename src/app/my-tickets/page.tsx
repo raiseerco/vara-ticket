@@ -5,9 +5,10 @@ import { ProgramMetadata, ReadStateParams } from "@gear-js/api";
 import { useAccount, useApi } from "@gear-js/react-hooks";
 import { useEffect, useState } from "react";
 
+import EventCard from "@/components/EventCard";
 import Loader from "@/components/Loader";
-import MyEventCard from "@/components/MyEventCard";
 import PlatformLayout from "../layouts/PlatformLayout";
+import TicketCard from "@/components/TicketCard";
 
 function PageContents() {
   const { isApiReady, api } = useApi();
@@ -69,13 +70,14 @@ function PageContents() {
         {fullState.map((eventItem, k) => {
           return (
             <div key={k}>
-              <MyEventCard
+              <TicketCard
                 name={eventItem.name}
                 description={eventItem.description}
                 creator={eventItem.creator}
-                myTickets={0} // FIXME
                 date={eventItem.date}
                 eventId={`${eventItem.creator}-${eventItem.eventId}`}
+                numberOfTickets={eventItem.numberOfTickets}
+                ticketsLeft={eventItem.ticketsLeft}
               />
             </div>
           );

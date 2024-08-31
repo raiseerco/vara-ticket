@@ -1,16 +1,21 @@
+import { META, PROGRAM_ID } from "@/utils/constants";
+import { ProgramMetadata, ReadStateParams } from "@gear-js/api";
+import React, { useState } from "react";
 import { localTime, shortAddress } from "@/lib/utils";
+import { useAccount, useApi } from "@gear-js/react-hooks";
 
 import { Button } from "./ui/Button";
 import Link from "next/link";
-import React from "react";
+import { web3FromSource } from "@polkadot/extension-dapp";
 
 interface MyEventCardProps {
   name: string;
   description: string;
+  ticketsSold: number;
+  ticketsLeft: number;
+  date: Date;
   creator: string;
-  myTickets: number;
-  date: number;
-  eventId: string;
+  eventId: number;
   // buyers: string[] ;
   // running:boolean;
   // metadata: string[] ;
@@ -22,9 +27,10 @@ interface MyEventCardProps {
 const MyEventCard: React.FC<MyEventCardProps> = ({
   name,
   description,
-  creator,
-  myTickets,
+  ticketsSold,
+  ticketsLeft,
   date,
+  creator,
   eventId,
   // buyers  ,
   // running  ,
@@ -33,40 +39,145 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
   // idCounter  ,
   // ticketFtId  ,
 }) => {
+  const { accounts, account } = useAccount();
+  const { api } = useApi();
+  const [alert, setAlert] = useState<string | undefined>(undefined);
+
+  const handleFinish = () => {
+    const metadataProgram = ProgramMetadata.from(META);
+
+    const message = {
+      destination: PROGRAM_ID,
+      payload: {
+        hold: {
+          creator: account.decodedAddress,
+          eventId: eventId,
+        },
+      },
+      gasLimit: 98998192450,
+      value: 0,
+    };
+
+    const signer = async () => {
+      const localaccount = account?.address;
+      const isVisibleAccount = accounts.some(
+        (visibleAccount) => visibleAccount.address === localaccount
+      );
+
+      if (isVisibleAccount) {
+        try {
+          // Create a message extrinsic
+
+          const transferExtrinsic = await api.message.send(
+            // @ts-ignore
+            message,
+            metadataProgram
+          );
+          const injector = await web3FromSource(accounts[0].meta.source);
+          if (!account) {
+            console.log("no account");
+            setAlert("No account");
+            return;
+          }
+          transferExtrinsic
+            .signAndSend(
+              account?.address,
+              // @ts-ignore
+              { signer: injector.signer },
+              ({ status }) => {
+                if (status.isInBlock) {
+                  setAlert(
+                    `Transaction included in block: ${status.asInBlock.toString()}`
+                  );
+                } else {
+                  console.log("In Process", status);
+                  if (status.isFinalized) {
+                    setAlert(
+                      `Transaction finalized: ${status.asFinalized.toString()}`
+                    );
+                  }
+                }
+              }
+            )
+            .catch((error: any) => {
+              console.error("Transaction failed", error);
+              setAlert("Transaction failed");
+            });
+        } catch (error) {
+          console.error("Error creating message extrinsic:", error);
+          console.trace();
+        }
+      } else {
+        setAlert("Account not available to sign");
+      }
+    };
+
+    signer();
+  };
+
   return (
     <>
-      <Link
+      <div
         className="flex items-center gap-2 bg-stone-200 dark:bg-stone-800 bg-opacity-25 shadow-md rounded-lg
    text-sm font-medium text-gray-500 transition-colors dark:text-stone-400"
-        href={`/event/${eventId}`}
       >
         <div className="rounded-lg p-3 w-70 h-70">
-          <div className="w-72 h-40 mb-2 flex justify-end items-end rounded-lg bg-rose-300 dark:bg-rose-400 ">
-            <span className="px-3 py-2 text-black dark:text-rose-200 text-xl tracking-tight">
-              {name}
-            </span>
-          </div>
+          <Link href={`/event/${account.decodedAddress}-${eventId}`}>
+            <div className="w-72 h-40 mb-2 flex justify-end items-end rounded-lg bg-rose-300 dark:bg-rose-400 ">
+              <span className="px-3 py-2 text-black dark:text-rose-200 text-xl tracking-tight">
+                {name}
+              </span>
+            </div>
+          </Link>
 
-          <p className="text-md tracking-tight font-mono">{description}</p>
+          <p
+            className="text-md tracking-tight font-mono
+           w-[280px]
+          truncate overflow-hidden whitespace-nowrap"
+          >
+            {description}
+          </p>
 
           <div className="flex justify-between py-2 align-mi">
-            <Button className="bg-rose-400 text-xs h-6 px-3 rounded-sm">
-              HOLD
+            <Button
+              onClick={() => handleFinish()}
+              className="bg-rose-400 text-xs h-6 px-3 rounded-sm"
+            >
+              FINISH
             </Button>
+
+            {ticketsLeft === 0 ? (
+              <Button className="bg-rose-700 text-xs h-6 px-3 rounded-sm">
+                SOLD OUT
+              </Button>
+            ) : (
+              <Button className="bg-stone-200 text-stone-600 text-xs h-6 px-3 rounded-sm">
+                {ticketsLeft} Left
+              </Button>
+            )}
+
             <small
               className="  bg-stone-200 dark:bg-rose-500 dark:text-black
             px-2 py-1 rounded-md"
             >
-              {myTickets | 0} tickets purchased
+              {ticketsSold | 0} tickets sold
             </small>
           </div>
 
-          <p className="text-right text-xs italic font-light mt-2">
-            Creator: {shortAddress(creator)} at{" "}
-            {localTime(date.toString(), "America/Montevideo")}
+          <p
+            style={{ fontSize: "8pt" }}
+            className="text-right italic font-light mt-2"
+          >
+            Created at: {new Date(date).toISOString()}
           </p>
         </div>
-      </Link>
+      </div>
+
+      {alert && (
+        <div className="bg-rose-200 border rounded-lg p-4 m-4">
+          <h1>{alert}</h1>
+        </div>
+      )}
     </>
   );
 };

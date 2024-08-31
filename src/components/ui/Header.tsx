@@ -51,7 +51,7 @@ export function Header({ isAccountVisible }: Props) {
 
         <Link
           className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-rose-100 hover:text-gray-900 focus:bg-rose-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
-          href="/holdings"
+          href="/my-tickets"
         >
           <GlobeIcon />
           My tickets
@@ -59,7 +59,7 @@ export function Header({ isAccountVisible }: Props) {
 
         <Link
           className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-rose-100 hover:text-gray-900 focus:bg-rose-100 focus:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50"
-          href="/holdings"
+          href="/my-events"
         >
           <CubeIcon />
           My events
