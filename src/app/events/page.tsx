@@ -2,7 +2,6 @@
 
 import { META, PROGRAM_ID } from "@/utils/constants";
 import { ProgramMetadata, ReadStateParams } from "@gear-js/api";
-// import { useAccount, useApi } from "@gear-js/react-hooks";
 import { useEffect, useState } from "react";
 
 import EventCard from "@/components/EventCard";
@@ -19,7 +18,7 @@ import { useApisContext } from "@/contexts/ApisContext";
 // );
 
 function PageContents() {
-  const { isApiReady, api, isAppReady, isAccountReady } = useApisContext();
+  const { api, isAppReady } = useApisContext();
   const [fullState, setFullState] = useState<any[]>([]);
 
   useEffect(() => {

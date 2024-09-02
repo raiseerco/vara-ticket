@@ -12,6 +12,20 @@ const ADDRESS = {
   NODE: "wss://testnet.vara-network.io",
 };
 
+// const DynamicProgramMetadataProvider = dynamic<any>(
+//   () => import("@gear-js/api").then((mod) => mod.ProgramMetadata),
+//   {
+//     ssr: false,
+//   }
+// );
+
+// // const DynamicReadStateParamsProvider = dynamic(
+// //   () => import("@/contexts/ApisContext").then((mod) => mod.ReadStateParams),
+// //   {
+// //     ssr: false,
+// //   }
+// // );
+
 const DynamicAccountProvider = dynamic<any>(
   () => import("@gear-js/react-hooks").then((mod) => mod.AccountProvider),
   { ssr: false }

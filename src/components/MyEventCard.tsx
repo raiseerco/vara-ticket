@@ -1,14 +1,13 @@
 import { META, PROGRAM_ID } from "@/utils/constants";
-import { ProgramMetadata, ReadStateParams } from "@gear-js/api";
 import React, { useState } from "react";
-import { localTime, shortAddress } from "@/lib/utils";
-import { useAccount, useApi } from "@gear-js/react-hooks";
 
 import { Button } from "./ui/Button";
 import Link from "next/link";
-import { web3FromSource } from "@polkadot/extension-dapp";
+import { ProgramMetadata } from "@gear-js/api";
+import { useApisContext } from "@/contexts/ApisContext";
 
 interface MyEventCardProps {
+  account: string;
   name: string;
   description: string;
   ticketsSold: number;
@@ -16,6 +15,9 @@ interface MyEventCardProps {
   date: Date;
   creator: string;
   eventId: number;
+  source: string;
+  running: boolean;
+  // api: any;
   // buyers: string[] ;
   // running:boolean;
   // metadata: string[] ;
@@ -25,6 +27,7 @@ interface MyEventCardProps {
 }
 
 const MyEventCard: React.FC<MyEventCardProps> = ({
+  account,
   name,
   description,
   ticketsSold,
@@ -32,6 +35,9 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
   date,
   creator,
   eventId,
+  source,
+  running,
+  // api,
   // buyers  ,
   // running  ,
   // metadata  ,
@@ -39,9 +45,8 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
   // idCounter  ,
   // ticketFtId  ,
 }) => {
-  const { accounts, account } = useAccount();
-  const { api } = useApi();
   const [alert, setAlert] = useState<string | undefined>(undefined);
+  const { isApiReady, api } = useApisContext();
 
   const handleFinish = () => {
     const metadataProgram = ProgramMetadata.from(META);
@@ -50,7 +55,7 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
       destination: PROGRAM_ID,
       payload: {
         hold: {
-          creator: account.decodedAddress,
+          creator: account,
           eventId: eventId,
         },
       },
@@ -59,12 +64,7 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
     };
 
     const signer = async () => {
-      const localaccount = account?.address;
-      const isVisibleAccount = accounts.some(
-        (visibleAccount) => visibleAccount.address === localaccount
-      );
-
-      if (isVisibleAccount) {
+      if (account) {
         try {
           // Create a message extrinsic
 
@@ -73,7 +73,9 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
             message,
             metadataProgram
           );
-          const injector = await web3FromSource(accounts[0].meta.source);
+          const { web3FromSource } = await import("@polkadot/extension-dapp"); // TODO this bastard needs to be dynamic
+          const injector = await web3FromSource(source);
+          if (!web3FromSource) return;
           if (!account) {
             console.log("no account");
             setAlert("No account");
@@ -81,7 +83,7 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
           }
           transferExtrinsic
             .signAndSend(
-              account?.address,
+              account,
               // @ts-ignore
               { signer: injector.signer },
               ({ status }) => {
@@ -122,7 +124,7 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
    text-sm font-medium text-gray-500 transition-colors dark:text-stone-400"
       >
         <div className="rounded-lg p-3 w-70 h-70">
-          <Link href={`/event/${account.decodedAddress}-${eventId}`}>
+          <Link href={`/event/${account}-${eventId}`}>
             <div className="w-72 h-40 mb-2 flex justify-end items-end rounded-lg bg-rose-300 dark:bg-rose-400 ">
               <span className="px-3 py-2 text-black dark:text-rose-200 text-xl tracking-tight">
                 {name}
@@ -139,12 +141,14 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
           </p>
 
           <div className="flex justify-between py-2 align-mi">
-            <Button
-              onClick={() => handleFinish()}
-              className="bg-rose-400 text-xs h-6 px-3 rounded-sm"
-            >
-              FINISH
-            </Button>
+            {running === true && (
+              <Button
+                onClick={() => handleFinish()}
+                className="bg-rose-400 text-xs h-6 px-3 rounded-sm"
+              >
+                FINISH
+              </Button>
+            )}
 
             {ticketsLeft === 0 ? (
               <Button className="bg-rose-700 text-xs h-6 px-3 rounded-sm">

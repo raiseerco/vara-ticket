@@ -10,7 +10,10 @@ export default function Home() {
     <>
       <style jsx global>{`
         @keyframes colorChange {
-          0%,
+          0% {
+            color: #fbbf24;
+          }
+          ,
           100% {
             color: #e7e5e4;
           }
@@ -19,14 +22,14 @@ export default function Home() {
             color: #a8a29e;
           }
           50% {
-            color: #1c1917;
+            color: #fb7185;
           }
         }
       `}</style>
 
       <div
         id="logo"
-        className="flex-shrink-0 w-full bg-black  fixed z-20 px-12 py-2  "
+        className="flex-shrink-0 w-full bg-black fixed z-20 px-12 py-2  "
       >
         <span className="font-blacks text-xl text-rose-400 font-mono">
           <i>vticket🎟️</i>

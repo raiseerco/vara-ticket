@@ -5,7 +5,6 @@ import { META, PROGRAM_ID } from "@/utils/constants";
 import { Button } from "@/components/ui/Button";
 import PlatformLayout from "../layouts/PlatformLayout";
 import { ProgramMetadata } from "@gear-js/api";
-import dynamic from "next/dynamic";
 import { shortAddress } from "@/lib/utils";
 import { useApisContext } from "@/contexts/ApisContext";
 import { useState } from "react";

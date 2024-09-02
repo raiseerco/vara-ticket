@@ -25,7 +25,14 @@ export const ApisProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ApisContext.Provider
-      value={{ isApiReady, api, isAccountReady, isAppReady, account, accounts }}
+      value={{
+        isApiReady,
+        api,
+        isAccountReady,
+        isAppReady,
+        account,
+        accounts,
+      }}
     >
       {children}
     </ApisContext.Provider>
