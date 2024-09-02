@@ -2,7 +2,6 @@
 
 import { META, PROGRAM_ID } from "@/utils/constants";
 import { ProgramMetadata, ReadStateParams } from "@gear-js/api";
-// import { useAccount, useApi } from "@gear-js/react-hooks";
 import { useEffect, useState } from "react";
 
 import Loader from "@/components/Loader";
@@ -19,7 +18,7 @@ import { useApisContext } from "@/contexts/ApisContext";
 // );
 
 function PageContents() {
-  const { isApiReady, api, isAppReady, isAccountReady, account } =
+  const { isApiReady, api, isAppReady, isAccountReady, account, accounts } =
     useApisContext();
   const [fullState, setFullState] = useState<any[]>([]);
   const [finishedEvents, setFinishedEvents] = useState<any[]>([]);
@@ -88,7 +87,7 @@ function PageContents() {
 
   return (
     <>
-      <div className="w-full flex text-xs justify-center gap-6 px-4 pt-4 bg-stone-50  ">
+      <div className="w-full flex text-xs justify-center gap-6 px-4 pt-4 bg-stone-50 dark:bg-transparent  dark:text-black ">
         <button
           className="px-3 py-2 bg-rose-200 rounded-sm"
           onClick={() => setShowRunning(true)}
@@ -99,7 +98,7 @@ function PageContents() {
           className="px-3 py-2 bg-rose-50 rounded-sm"
           onClick={() => setShowRunning(false)}
         >
-          Finished Events
+          My NFTs - Past events
         </button>
       </div>
       {showRunning ? (
@@ -108,6 +107,7 @@ function PageContents() {
             return (
               <div key={k}>
                 <MyEventCard
+                  account={account.decodedAddress}
                   name={eventItem.name}
                   description={eventItem.description}
                   date={eventItem.date}
@@ -117,6 +117,9 @@ function PageContents() {
                     eventItem.numberOfTickets - eventItem.ticketsLeft
                   }
                   ticketsLeft={eventItem.ticketsLeft}
+                  source={accounts[0].meta.source}
+                  running={true}
+                  // api
                 />
               </div>
             );
@@ -128,6 +131,7 @@ function PageContents() {
             return (
               <div key={k}>
                 <MyEventCard
+                  account={account.decodedAddress}
                   name={eventItem.name}
                   description={eventItem.description}
                   date={eventItem.date}
@@ -137,6 +141,9 @@ function PageContents() {
                     eventItem.numberOfTickets - eventItem.ticketsLeft
                   }
                   ticketsLeft={eventItem.ticketsLeft}
+                  source={accounts[0].meta.source}
+                  running={false}
+                  // api
                 />
               </div>
             );
