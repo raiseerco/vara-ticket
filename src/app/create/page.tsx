@@ -10,9 +10,7 @@ import { useApisContext } from "@/contexts/ApisContext";
 import { useState } from "react";
 
 function PageContents() {
-  const { isApiReady, api, isAppReady, isAccountReady, account, accounts } =
-    useApisContext();
-
+  const { api, account, accounts } = useApisContext();
   const [name, setName] = useState("");
   const [supply, setSupply] = useState(0);
   const [description, setDescription] = useState("");
