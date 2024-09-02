@@ -86,7 +86,7 @@ function PageContents() {
                 numberOfTickets={eventItem.numberOfTickets}
                 ticketsLeft={eventItem.ticketsLeft}
                 date={eventItem.date}
-                eventId={`${eventItem.creator}-${eventItem.eventId}`}
+                eventId={`${eventItem.eventId}`}
               />
             </div>
           );

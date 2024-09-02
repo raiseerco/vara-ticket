@@ -9,7 +9,7 @@ import Loader from "../../components/Loader";
 import dynamic from "next/dynamic";
 
 const ADDRESS = {
-  NODE: "wss://testnet.vara-network.io",
+  NODE: "wss://testnet.vara.network",
 };
 
 // const DynamicProgramMetadataProvider = dynamic<any>(

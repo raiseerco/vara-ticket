@@ -75,7 +75,7 @@ function PageContents() {
                 description={eventItem.description}
                 creator={eventItem.creator}
                 date={eventItem.date}
-                eventId={`${eventItem.creator}-${eventItem.eventId}`}
+                eventId={`${eventItem.eventId}`}
                 numberOfTickets={eventItem.numberOfTickets}
                 ticketsLeft={eventItem.ticketsLeft}
               />
