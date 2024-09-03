@@ -17,6 +17,58 @@ function PageContents() {
   const [date, setDate] = useState<number>(new Date().getTime());
   const [alert, setAlert] = useState<string | undefined>(undefined);
 
+  // ipfs
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [CID, setCID] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const selectedFile = event.target.files[0];
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile));
+    } else {
+      setFile(null);
+      setPreview(null);
+    }
+  };
+
+  const uploadIPFS = async () => {
+    if (!file) {
+      // setError("Please select a file to upload.");
+      return;
+    }
+
+    setUploading(true);
+    setError(null);
+    setCID(null);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setCID(data.cid);
+        return data.cid;
+      } else {
+        setError(data.error || "Failed to upload image.");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleCreate = async () => {
     const { web3FromSource } = await import("@polkadot/extension-dapp"); // TODO this bastard needs to be dynamic
     if (!web3FromSource) return;
@@ -24,6 +76,8 @@ function PageContents() {
     const isVisibleAccount = accounts?.some(
       (visibleAccount) => visibleAccount.address === localAccount
     );
+
+    const uploadedCID = await uploadIPFS();
 
     const message = {
       destination: PROGRAM_ID,
@@ -34,6 +88,7 @@ function PageContents() {
           description,
           number_of_tickets: supply,
           date,
+          media: uploadedCID,
         },
       },
       gasLimit: 98998192450,
@@ -110,11 +165,6 @@ function PageContents() {
           <div className="border w-8/12 flex shadow-lg rounded-lg justify-center mx-auto">
             {/* left panel */}
             <div className="w-8/12 p-4 justify-center flex flex-col">
-              <p className="text-xs">Creator address</p>
-              <p className="mb-4 mt-2 text-xs font-mono">
-                {shortAddress(account?.address)}
-              </p>
-
               <p className="text-xs">Event name</p>
               <input
                 onChange={(e) => setName(e.target.value)}
@@ -148,12 +198,56 @@ function PageContents() {
             </div>
 
             {/* right panel  */}
-            <div className="w-4/12 flex flex-col p-4 gap-4">
-              <div className="w-full p-4 h-40 text-stone-600 bg-rose-300 rounded-lg">
-                Image placeholder
-              </div>
-              <div className="text-center">
-                <Button className="px-3 py-1 ">Upload image</Button>
+            <div className="w-4/12 flex flex-col gap-4">
+              <div className="max-w-md mx-auto p-4  rounded-lg  ">
+                {/* <div > */}
+                <label htmlFor="fileInput" className="block text-sm  ">
+                  Cover image
+                </label>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  id="fileInput"
+                  onChange={handleFileChange}
+                  className="mt-2 text-sm p-2 w-full"
+                />
+                {/* </div> */}
+                {preview && (
+                  <div className="mt-4">
+                    <img
+                      src={preview}
+                      alt="Selected preview"
+                      className="w-full h-48 object-cover rounded-lg shadow-sm"
+                    />
+                  </div>
+                )}
+                {/* <Button
+                  onClick={handleUpload}
+                  className={`w-full py-2 px-4 mt-4 bg-blue-600 text-white font-semibold rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    uploading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={uploading}
+                >
+                  {uploading ? "Uploading..." : "Upload"}
+                </Button> */}
+                {uploading && "Uploading image to IPFS..."}
+                {error && <p className="mt-4 text-red-500 text-sm">{error}</p>}
+                {/* inner control  */}
+                {/* {CID && (
+                  <div className="mt-4">
+                    <p className="text-green-600">
+                      File uploaded successfully. CID:
+                    </p>
+                    <a
+                      href={`https://ipfs.io/ipfs/${CID}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      {CID}
+                    </a>
+                  </div>
+                )} */}
               </div>
             </div>
           </div>
