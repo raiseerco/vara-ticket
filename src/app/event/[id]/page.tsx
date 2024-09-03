@@ -70,7 +70,7 @@ function PageContents(idEvent: any) {
     let ticket = {
       title: eventDetails.name,
       description: eventDetails.description,
-      media: "vticket platform",
+      media: eventDetails.media,
       reference: "NONE",
     };
 
