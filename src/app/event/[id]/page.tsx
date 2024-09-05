@@ -65,12 +65,14 @@ function PageContents(idEvent: any) {
   }
 
   const handleBuy = async () => {
+    console.log("eventDetails ", eventDetails);
+
     if (amount < 1 || amount > eventDetails.ticketsLeft) return;
 
     let ticket = {
       title: eventDetails.name,
       description: eventDetails.description,
-      media: eventDetails.media,
+      event_img_url: eventDetails.event_img_url,
       reference: "NONE",
     };
 
@@ -151,6 +153,7 @@ function PageContents(idEvent: any) {
       setAlert("Account not available to sign");
     }
   };
+  const imgg = `https://ipfs.io/ipfs/${eventDetails?.eventImgUrl}`;
 
   return (
     eventDetails && (
@@ -158,8 +161,16 @@ function PageContents(idEvent: any) {
         <span className=" text-4xl">{eventDetails.name}</span>
         <div className="gap-6 pt-8 flex flex-wrap justify-center">
           <>
-            <div className="rounded-lg p-3 w-8/12 h-70S mx-auto">
-              <div className="w-full h-60 mb-2 flex justify-end items-end rounded-lg bg-rose-200 dark:bg-rose-300 ">
+            <div className="rounded-lg p-3 w-8/12 mx-auto">
+              <div
+                style={{
+                  backgroundImage: `url(${imgg})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
+                className="w-full h-60 mb-2 flex justify-end items-end rounded-lg bg-rose-200 dark:bg-rose-300 "
+              >
                 <span className="px-3 py-2 text-black dark:text-rose-200 text-xl tracking-tight"></span>
               </div>
 
@@ -167,8 +178,7 @@ function PageContents(idEvent: any) {
                 {eventDetails.description}
               </p>
               <div className="text-right mt-2">
-                {eventDetails.numberOfTickets - eventDetails.ticketsLeft <
-                10 ? (
+                {eventDetails.ticketsLeft < 10 ? (
                   <button className="px-3 py-1 rounded-md mr-2 text-white bg-rose-500">
                     Hurry up!
                   </button>
@@ -185,8 +195,13 @@ function PageContents(idEvent: any) {
                 </small>
               </div>
               <p className="text-right text-xs italic font-light mt-2">
-                Creator: {shortAddress(eventDetails.creator)} on{" "}
-                {eventDetails.date}
+                Creator: {shortAddress(eventDetails.creator)}
+                {eventDetails.eventInitDate.toString() === "0" ||
+                  (!eventDetails.eventInitDate && (
+                    <>
+                      at {new Date(eventDetails.eventInitDate)?.toISOString()}
+                    </>
+                  ))}
               </p>
 
               <div className="text-left flex my-4 text-xl">

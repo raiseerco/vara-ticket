@@ -5,7 +5,6 @@ import { ProgramMetadata, ReadStateParams } from "@gear-js/api";
 import { useAccount, useApi } from "@gear-js/react-hooks";
 import { useEffect, useState } from "react";
 
-import EventCard from "@/components/EventCard";
 import Loader from "@/components/Loader";
 import PlatformLayout from "../layouts/PlatformLayout";
 import TicketCard from "@/components/TicketCard";
@@ -74,10 +73,11 @@ function PageContents() {
                 name={eventItem.name}
                 description={eventItem.description}
                 creator={eventItem.creator}
-                date={eventItem.date}
+                date={eventItem.eventInitDate}
                 eventId={`${eventItem.eventId}`}
                 numberOfTickets={eventItem.numberOfTickets}
                 ticketsLeft={eventItem.ticketsLeft}
+                CIDImage={eventItem.eventImgUrl}
               />
             </div>
           );

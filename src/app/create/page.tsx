@@ -88,7 +88,7 @@ function PageContents() {
           description,
           number_of_tickets: supply,
           date,
-          media: uploadedCID,
+          event_img_url: uploadedCID,
         },
       },
       gasLimit: 98998192450,

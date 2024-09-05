@@ -10,6 +10,7 @@ interface EventCardProps {
   creator: string;
   numberOfTickets: number;
   ticketsLeft: number;
+  CIDImage: string;
   date: number;
   eventId: string;
   // buyers: string[] ;
@@ -26,6 +27,7 @@ const EventCard: React.FC<EventCardProps> = ({
   creator,
   numberOfTickets,
   ticketsLeft,
+  CIDImage,
   date,
   eventId,
   // buyers  ,
@@ -35,6 +37,7 @@ const EventCard: React.FC<EventCardProps> = ({
   // idCounter  ,
   // ticketFtId  ,
 }) => {
+  const imgg = `https://ipfs.io/ipfs/${CIDImage}`;
   return (
     <Link
       className="flex h-70 items-center gap-2 bg-stone-200 dark:bg-stone-800 bg-opacity-25 shadow-md rounded-lg
@@ -42,8 +45,19 @@ const EventCard: React.FC<EventCardProps> = ({
       href={`/event/${creator}-${eventId}`}
     >
       <div className="rounded-lg p-3">
-        <div className="w-72 h-40 mb-2 flex justify-end items-end rounded-lg bg-rose-300 dark:bg-rose-400">
-          <span className="px-3 py-2 text-black dark:text-rose-200 text-xl tracking-tight">
+        <div
+          style={{
+            backgroundImage: `url(${imgg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+          className="w-72 h-40 mb-2 flex justify-end items-end rounded-lg bg-rose-300 dark:bg-rose-400"
+        >
+          <span
+            style={{ backgroundColor: "#c578aca1" }}
+            className="px-3 py-2  rounded-tl-lg rounded-br-lg text-black dark:text-rose-200 text-xl tracking-tight"
+          >
             {name}
           </span>
         </div>
@@ -69,8 +83,9 @@ const EventCard: React.FC<EventCardProps> = ({
         </div>
 
         <p className="text-right text-xs italic font-light mt-2">
-          Creator: {shortAddress(creator)} at{" "}
-          {localTime(date.toString(), "America/Montevideo")}
+          Creator: {shortAddress(creator)}
+          {date.toString() === "0" ||
+            (!date && <>at {new Date(date)?.toISOString()}</>)}
         </p>
       </div>
     </Link>

@@ -13,6 +13,7 @@ interface MyEventCardProps {
   ticketsSold: number;
   ticketsLeft: number;
   date: Date;
+  CIDImage: string;
   creator: string;
   eventId: number;
   source: string;
@@ -32,6 +33,7 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
   description,
   ticketsSold,
   ticketsLeft,
+  CIDImage,
   date,
   creator,
   eventId,
@@ -47,6 +49,7 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
 }) => {
   const [alert, setAlert] = useState<string | undefined>(undefined);
   const { isApiReady, api } = useApisContext();
+  const imgg = `https://ipfs.io/ipfs/${CIDImage}`;
 
   const handleFinish = () => {
     const metadataProgram = ProgramMetadata.from(META);
@@ -54,7 +57,7 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
     const message = {
       destination: PROGRAM_ID,
       payload: {
-        hold: {
+        Close: {
           creator: account,
           eventId: eventId,
         },
@@ -125,8 +128,19 @@ const MyEventCard: React.FC<MyEventCardProps> = ({
       >
         <div className="rounded-lg p-3 w-70 h-70">
           <Link href={`/event/${account}-${eventId}`}>
-            <div className="w-72 h-40 mb-2 flex justify-end items-end rounded-lg bg-rose-300 dark:bg-rose-400 ">
-              <span className="px-3 py-2 text-black dark:text-rose-200 text-xl tracking-tight">
+            <div
+              style={{
+                backgroundImage: `url(${imgg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+              className="w-72 h-40 mb-2 flex justify-end items-end rounded-lg bg-rose-300 dark:bg-rose-400 "
+            >
+              <span
+                style={{ backgroundColor: "#c578aca1" }}
+                className="px-3 py-2  rounded-tl-lg rounded-br-lg  text-black dark:text-rose-200 text-xl tracking-tight"
+              >
                 {name}
               </span>
             </div>
