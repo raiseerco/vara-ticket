@@ -89,13 +89,17 @@ function PageContents() {
     <>
       <div className="w-full flex text-xs justify-center gap-6 px-4 pt-4 bg-stone-50 dark:bg-transparent  dark:text-black ">
         <button
-          className="px-3 py-2 bg-rose-200 rounded-sm"
+          className={`px-3 py-2 ${
+            showRunning ? "bg-rose-300" : "bg-rose-50 "
+          } rounded-sm`}
           onClick={() => setShowRunning(true)}
         >
           Active Events
         </button>
         <button
-          className="px-3 py-2 bg-rose-50 rounded-sm"
+          className={`px-3 py-2 ${
+            showRunning ? "bg-rose-50" : "bg-rose-300 "
+          } rounded-sm`}
           onClick={() => setShowRunning(false)}
         >
           My NFTs - Past events
@@ -110,9 +114,10 @@ function PageContents() {
                   account={account.decodedAddress}
                   name={eventItem.name}
                   description={eventItem.description}
-                  date={eventItem.date}
+                  date={eventItem.eventInitDate}
                   creator={eventItem.creator}
                   eventId={eventItem.eventId}
+                  CIDImage={eventItem.eventImgUrl}
                   ticketsSold={
                     eventItem.numberOfTickets - eventItem.ticketsLeft
                   }
@@ -134,9 +139,10 @@ function PageContents() {
                   account={account.decodedAddress}
                   name={eventItem.name}
                   description={eventItem.description}
-                  date={eventItem.date}
+                  date={eventItem.eventInitDate}
                   creator={eventItem.creator}
                   eventId={eventItem.eventId}
+                  CIDImage={eventItem.eventImgUrl}
                   ticketsSold={
                     eventItem.numberOfTickets - eventItem.ticketsLeft
                   }

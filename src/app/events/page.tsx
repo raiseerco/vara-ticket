@@ -1,6 +1,11 @@
 "use client";
 
-import { META, PROGRAM_ID } from "@/utils/constants";
+import {
+  META,
+  META_MULTI,
+  PROGRAM_ID,
+  PROGRAM_ID_MULTI,
+} from "@/utils/constants";
 import { ProgramMetadata, ReadStateParams } from "@gear-js/api";
 import { useEffect, useState } from "react";
 
@@ -35,13 +40,12 @@ function PageContents() {
       api.programState
         .read(params, metadata)
         .then((result) => {
-          console.log("State from result:", result);
-
           const state = result.toJSON();
           if (!state) {
             console.log("vacio");
             return;
           }
+          console.log("State from result:", state);
 
           // @ts-ignore
           if (Array.isArray(state.evStateInfo[0])) {
@@ -77,6 +81,7 @@ function PageContents() {
     <>
       <div className="gap-6 pt-8 flex flex-wrap justify-center">
         {fullState.map((eventItem, k) => {
+          console.log("eventItem ", eventItem);
           return (
             <div key={k}>
               <EventCard
@@ -85,7 +90,8 @@ function PageContents() {
                 creator={eventItem.creator}
                 numberOfTickets={eventItem.numberOfTickets}
                 ticketsLeft={eventItem.ticketsLeft}
-                date={eventItem.date}
+                date={eventItem.eventInitDate}
+                CIDImage={eventItem.eventImgUrl}
                 eventId={`${eventItem.eventId}`}
               />
             </div>
