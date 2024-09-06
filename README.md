@@ -1,10 +1,10 @@
-#VTicket
+# VTicket
 
-##Project Description
+## Project Description
 
 VTicket is a cutting-edge platform leveraging Vara Network technology to revolutionize the event ticketing industry. By converting each ticket into an NFT (non-fungible token), VTicket offers a secure, transparent, and personalized experience for both event organizers and attendees.
 
-##Main Features
+## Main Features
 
 - **NFT Ticket Creation:**
   Event organizers can create unique tickets as NFTs, ensuring authenticity and protection against fraud.
@@ -14,6 +14,7 @@ VTicket is a cutting-edge platform leveraging Vara Network technology to revolut
 
 - **NFT Ticket Sale and Resale:**
   Tickets can be sold and resold securely and transparently, providing protection for both buyers and sellers.
+![vtk3](https://github.com/user-attachments/assets/40f9c0f1-83d1-4aff-ba17-32914e830ab4)
 
 🚀 **VTicket revolutionizes events with NFT tickets.** 🎫✨
 
@@ -28,7 +29,7 @@ Join the future of events with VTicket. 🌟
 - 👉 [Telegram](https://t.me/vticket)
 - 👉 Follow us on [X](https://twitter.com/vticket)
 
-#🎟️ vticket Platform
+# 🎟️ vticket Platform
 
 Welcome to the **vticket Platform** repository. This platform is designed for seamless event ticket sales, providing a robust and scalable solution powered by Vara Network.
 
@@ -41,7 +42,7 @@ Welcome to the **vticket Platform** repository. This platform is designed for se
 - **TypeScript**: Strongly-typed JavaScript for better code quality and developer experience.
 - **Vara Network**: A decentralized network to ensure secure and efficient blockchain operations.
 
-##📦 Installation
+## 📦 Installation
 
 Follow these steps to set up the project locally:
 
